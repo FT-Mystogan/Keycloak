@@ -1,42 +1,59 @@
 keycloak:
-    auth-server-url: http://localhost:8080
-    bearer-only: false
-    confidential-port: 8081
-    credentials:
-        secret: tiXXvVkHsjM1gdvxebuB9SmIM7LVaYkf
-    policy-enforcer-config:
-        enforcement-mode: ENFORCING
-    principal-attribute: preferred_username
-    public-client: false
-    realm: myrealm
-    resource: hrm
-    security-constraints:
-    -   authRoles:
+  auth-server-url: http://localhost:8080
+  bearer-only: false
+  confidential-port: 8081
+  credentials:
+    secret: tiXXvVkHsjM1gdvxebuB9SmIM7LVaYkf
+  policy-enforcer-config:
+    enforcement-mode: ENFORCING
+    paths:
+      - path: "/api/overtime-requests"
+        methods:
+          - method: "GET"
+            scopes:
+              - "GET"
+          - method: "POST"
+            scopes:
+              - "POST"
+  principal-attribute: preferred_username
+  public-client: false
+  realm: myrealm
+  resource: hrm
+  security-constraints:
+    - authRoles:
         - '*'
-        securityCollections:
-        -   patterns:
+      securityCollections:
+        - patterns:
             - /*
-    ssl-required: none
-    use-resource-role-mappings: true
+  ssl-required: none
+  use-resource-role-mappings: true
 logging:
-    level:
-        com:
-            edw: debug
-        root: warn
+  level:
+    com:
+      edw: debug
+    root: warn
 server:
-    forward-headers-strategy: NATIVE
-    port: 8081
+  forward-headers-strategy: NATIVE
+  port: 8081
 spring:
-    application:
-        name: Keycloak for Backchannel
-    datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        password: 123456
-        url: jdbc:mysql://127.0.0.1:3306/db_session
-        username: root
-    main:
-        allow-bean-definition-overriding: true
-    session:
-        jdbc:
-            flush-mode: on_save
-            initialize-schema: always
+  application:
+    name: Keycloak for Backchannel
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/db_session
+    username: root
+  main:
+    allow-bean-definition-overriding: true
+  session:
+    jdbc:
+      flush-mode: on_save
+      initialize-schema: always
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
